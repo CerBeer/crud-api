@@ -12,8 +12,8 @@
     "test": "jest --silent",
     "build": "webpack",
     "start:dev": "nodemon",
-    "start:prod": "webpack --mode production && node dist/server.js",
-    "start:multi": "webpack --mode production && node dist/server.js --multi"
+    "start:prod": "webpack --mode production && node build/server.js",
+    "start:multi": "webpack --mode production && node build/server.js --multi"
   },
   "author": "",
   "license": "ISC",
