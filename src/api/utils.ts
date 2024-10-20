@@ -74,6 +74,33 @@ export const resErrors = {
       }),
     };
   },
+  NCRF: (errorList: string[]) => {
+    return {
+      code: 400,
+      body: JSON.stringify({
+        error:
+          errorList.length > 0
+            ? errorList
+            : "Request body does not contain required fields",
+      }),
+    };
+  },
+  EJSON: () => {
+    return {
+      code: 400,
+      body: JSON.stringify({
+        error: "Filed to parse JSON",
+      }),
+    };
+  },
+  ISE: () => {
+    return {
+      code: 500,
+      body: JSON.stringify({
+        error: "Internal server error",
+      }),
+    };
+  },
 };
 
 export const resOk = {
@@ -83,4 +110,29 @@ export const resOk = {
       body: typeof body === "object" ? JSON.stringify(body) : body,
     };
   },
+};
+
+export const validateUser = (
+  username: string,
+  age: number,
+  hobbies: string[],
+) => {
+  console.log({ username, age, hobbies });
+  const errors: string[] = [];
+  if (!username) errors.push("Username required");
+  else if (typeof username !== "string")
+    errors.push("Username must be a string");
+
+  if (!age) errors.push("Age required");
+  else if (typeof age !== "number") errors.push("Age must be a number");
+
+  if (!hobbies) errors.push("Hobbies required");
+  else if (
+    !Array.isArray(hobbies) ||
+    !hobbies.every((e) => typeof e === "string")
+  )
+    errors.push("Hobbies must be an array of strings");
+
+  console.log({ errors });
+  return errors;
 };
