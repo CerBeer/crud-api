@@ -53,7 +53,12 @@ export class Users {
   public updateUser = (id: string, newUser: NewUser): User => {
     const user = this.getUserById(id);
     if (!user.id) return user;
-    const updatedUser = { ...user, ...newUser };
+    const updatedUser = {
+      id,
+      username: newUser.username ? newUser.username : user.username,
+      age: newUser.age ? newUser.age : user.age,
+      hobbies: newUser.hobbies ? newUser.hobbies : user.hobbies,
+    };
     this._records.set(id, updatedUser);
     return updatedUser;
   };
@@ -63,5 +68,10 @@ export class Users {
     if (!user.id) return user;
     this._records.delete(id);
     return user;
+  };
+
+  public flushDB = (): User[] => {
+    this._records = new Map();
+    return this.getAllUsers();
   };
 }

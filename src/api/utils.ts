@@ -60,6 +60,12 @@ export const resErrors = {
       body: JSON.stringify({ error: "Endpoint not found" }),
     };
   },
+  MNA: () => {
+    return {
+      code: 404,
+      body: JSON.stringify({ error: "Method not allowed" }),
+    };
+  },
   UIdI: () => {
     return {
       code: 400,
@@ -110,6 +116,18 @@ export const resOk = {
       body: typeof body === "object" ? JSON.stringify(body) : body,
     };
   },
+  create: (body: object | string) => {
+    return {
+      code: 201,
+      body: typeof body === "object" ? JSON.stringify(body) : body,
+    };
+  },
+  delete: () => {
+    return {
+      code: 204,
+      body: "",
+    };
+  },
 };
 
 export const validateUser = (
@@ -117,7 +135,6 @@ export const validateUser = (
   age: number,
   hobbies: string[],
 ) => {
-  console.log({ username, age, hobbies });
   const errors: string[] = [];
   if (!username) errors.push("Username required");
   else if (typeof username !== "string")
@@ -133,6 +150,26 @@ export const validateUser = (
   )
     errors.push("Hobbies must be an array of strings");
 
-  console.log({ errors });
+  return errors;
+};
+
+export const validateUpdateUser = (
+  username: string,
+  age: number,
+  hobbies: string[],
+) => {
+  const errors: string[] = [];
+  if (!username && !age && !hobbies)
+    errors.push("Username or age or hobbies required");
+
+  if (username && typeof username !== "string")
+    errors.push("Username must be a string");
+
+  if (age && typeof age !== "number") errors.push("Age must be a number");
+
+  if (hobbies)
+    if (!Array.isArray(hobbies) || !hobbies.every((e) => typeof e === "string"))
+      errors.push("Hobbies must be an array of strings");
+
   return errors;
 };

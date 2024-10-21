@@ -19,5 +19,5 @@ export default async function addUser(body: string, env: Env) {
 
   if (!newUser.id) return resErrors.ISE();
 
-  return resOk.Ok(newUser);
+  return resOk.create(newUser);
 }

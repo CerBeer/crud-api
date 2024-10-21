@@ -4,6 +4,8 @@ import { setRes, resErrors, getUUIDFromURL, getBody } from "./api/utils";
 import getUsers from "./api/getUsers";
 import addUser from "./api/addUser";
 import updateUser from "./api/updateUser";
+import deleteUser from "./api/deleteUser";
+import initDB from "./api/initDB";
 
 export async function routeRequest(
   req: IncomingMessage,
@@ -25,9 +27,12 @@ export async function routeRequest(
       setRes(res, await updateUser(uuid, body, env));
       break;
     case "DELETE":
-      setRes(res, await getUsers(uuid, env));
+      setRes(res, await deleteUser(uuid, env));
+      break;
+    case "PATCH":
+      setRes(res, await initDB(body, env));
       break;
     default:
-      setRes(res, resErrors.ENF());
+      setRes(res, resErrors.MNA());
   }
 }

@@ -1,5 +1,5 @@
 import { User } from "../database/db";
-import { resOk, resErrors, validateUser, typeUUIDFromURL } from "./utils";
+import { resOk, resErrors, validateUpdateUser, typeUUIDFromURL } from "./utils";
 import { Env } from "env";
 
 export default async function updateUser(
@@ -19,11 +19,12 @@ export default async function updateUser(
 
   const { username, age, hobbies } = user;
 
-  if (validateUser(username, age, hobbies).length) return resErrors.NCRF([]);
+  if (validateUpdateUser(username, age, hobbies).length)
+    return resErrors.NCRF([]);
 
   const newUser = env.DB.updateUser(uuid.uuid, { username, age, hobbies });
 
-  if (!newUser.id) return resErrors.ISE();
+  if (!newUser.id) return resErrors.UNF();
 
   return resOk.Ok(newUser);
 }
